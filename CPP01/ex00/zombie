@@ -1,0 +1,37 @@
+!<arch>
+newZombie.cpp/  0           0     0     644     137       `
+#include "Zombie.hpp"
+
+
+Zombie* Zombie::newZombie( std::string name )
+{
+    this->name = name;
+    this->announce();
+    return (this);
+}
+randomChump.cpp/0           0     0     644     72        `
+#include "Zombie.hpp"
+
+void Zombie::randomChump( std::string name )
+{
+
+}Zombie.cpp/     0           0     0     644     115       `
+#include "Zombie.hpp"
+
+void Zombie::announce(void)
+{
+    std::cout << this->name << ":  BraiiiiiiinnnzzzZ..."; 
+}
+
+
+main.cpp/       0           0     0     644     132       `
+#include "Zombie.hpp"
+#include "newZombie.cpp"
+
+int main(void)
+{
+    Zombie zombie;
+
+    zombie.newZombie("Loic");
+    return (0);
+}
