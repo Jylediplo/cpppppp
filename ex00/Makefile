@@ -1,0 +1,37 @@
+NAME = megaphone
+
+SRCS	=	./megaphone.cpp\
+
+OBJS	=	${SRCS:%.c=${OBJ_D}%.o}
+
+SRC_D =	src/
+
+OBJ_D = objs/
+
+CC = c++
+
+CFLAGS = -Wall -Wextra -Werror -std=c++98
+
+#HEADER = philo.h
+
+all		:
+	@make --no-print-directory ${NAME}
+
+${OBJS}	:	${OBJ_D}%.o: ${SRC_D}%.c
+	${CC}	${CFLAGS} -c $< -o $@
+
+${NAME}	:	${OBJ_D} ${OBJS} Makefile
+	${CC} ${CFLAGS} ${OBJS} -o ${NAME}
+
+${OBJ_D}:
+	@mkdir -p ${OBJ_D}
+
+clean	:
+	rm -rf ${OBJ_D}
+
+fclean	:	clean
+	rm -f ${NAME}
+
+re		:	fclean all
+
+.PHONY	:	all clean fclean re%   
