@@ -4,8 +4,10 @@ int menu()
 {
     std::string choice;
 
+    if (std::cin.eof() || std::cin.fail()) 
+        return 0;
     std::cout << "ADD\nSEARCH\nEXIT\n"
-    << "your choice : ";
+    << "your choice : \n";
     std::cin >> choice;
     if (choice.compare("ADD") == 0)
         return (std::cout << "\033c", 1);
@@ -24,6 +26,7 @@ Contact Contact::fill_form(int *i)
 {
     Contact contact;
 
+    
     std::cout << "first name : ";
     std::cin >> contact.firstName;
     contact.id = *i;
@@ -34,6 +37,8 @@ Contact Contact::fill_form(int *i)
     // std::cout << "secret : ";
     // std::cin >> contact.secret;
     std::cout << "\033c";
+    if (std::cin.eof() || std::cin.fail())
+        return (contact);
     std::cout << "successfully added contact !\n";
     return (contact);
 }
@@ -65,11 +70,12 @@ void Phonebook::show_list(Phonebook *phonebook, int *i)
 
 int choose_index(int *i)
 {
-    int index;
+    size_t index;
     Contact contact;
     std::cout << "enter index : ";
     std::cin >> index;
-    if (index >= *i)
+
+    if (index > (*i - 1) || index < 0)
     {
         return (choose_index(i));
     }
@@ -103,6 +109,12 @@ int    manage_choice(int choice, Phonebook *phonebook, int *i)
     }
     if (choice == 2)
     {
+        std::cout << "i: "<< *i << std::endl;
+        if (*i == 0)
+        {
+            std::cout << "no contacts yet !" << std::endl;
+            return (1);
+        }
         phonebook->show_list(phonebook, i);
         index = choose_index(i);
         phonebook->display_all_infos(phonebook, index);
@@ -120,9 +132,11 @@ void Contact::display_index(Contact contact)
     fName = contact.firstName;
     if (fName.length() > 10)
         fName = fName.substr(0, 9) + ".";
+    
     std::cout << contact.id; 
     std::cout << "| ";
     std::cout << fName << std::endl;
+
 }
 
 int main(void)
