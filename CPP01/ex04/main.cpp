@@ -1,8 +1,16 @@
 #include "main.hpp"
 
 void handle_input(std::string file, std::string s1, std::string s2)
-{
-    ofstream
+{;
+	std::string out;
+	(void)s1;
+	(void)s2;
+
+	
+	std::ofstream myfile;
+  	myfile.open (file.c_str());
+	myfile << "Writing this to a file.\n";
+  	myfile.close();
 }
 
 int main(int argc, char **argv)
