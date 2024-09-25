@@ -2,25 +2,25 @@ NAME = megaphone
 
 SRCS	=	./megaphone.cpp\
 
-OBJS	=	${SRCS:%.c=${OBJ_D}%.o}
+OBJS	=	${SRCS:%.cpp=${OBJ_D}%.o}
 
 SRC_D =	src/
 
 OBJ_D = objs/
 
-CC = c++
+CC = c++ -std=c++98
 
-CFLAGS = -Wall -Wextra -Werror -std=c++98
+CFLAGS = -Wall -Wextra -Werror
 
 #HEADER = philo.h
 
 all		:
 	@make --no-print-directory ${NAME}
 
-${OBJS}	:	${OBJ_D}%.o: ${SRC_D}%.c
+${OBJS}	:	${OBJ_D}%.o: ${SRC_D}%.cpp #headers/philo.h
 	${CC}	${CFLAGS} -c $< -o $@
 
-${NAME}	:	${OBJ_D} ${OBJS} Makefile
+${NAME}	:	${OBJ_D} ${OBJS} Makefile #headers/philo.h
 	${CC} ${CFLAGS} ${OBJS} -o ${NAME}
 
 ${OBJ_D}:
@@ -34,4 +34,4 @@ fclean	:	clean
 
 re		:	fclean all
 
-.PHONY	:	all clean fclean re%   
+.PHONY	:	all clean fclean re
