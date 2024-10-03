@@ -1,4 +1,4 @@
-#include "test.hpp"
+#include "../headers/contact.hpp"
 
 int menu()
 {
@@ -29,7 +29,7 @@ Contact Contact::fill_form(int *i)
     
     std::cout << "first name : ";
     std::cin >> contact.firstName;
-    contact.id = *i;
+	*i == 8 ? contact.id = 0 : contact.id = *i;
     std::cout << "nickname : ";
     std::cin >> contact.nickName;
     // std::cout << "phone : ";
@@ -45,9 +45,11 @@ Contact Contact::fill_form(int *i)
 
 void    Phonebook::add_contact(Contact contact, Phonebook *phonebook, int *i)
 {
+
+	(void)phonebook;
     if (*i > 7)
     {
-        this->contacts[7] = contact;
+        this->contacts[0] = contact;
     }
     else
     {
@@ -70,17 +72,19 @@ void Phonebook::show_list(Phonebook *phonebook, int *i)
 
 int choose_index(int *i)
 {
-    size_t index;
+    int index;
     Contact contact;
     std::cout << "enter index : ";
     std::cin >> index;
-
-    if (index > (*i - 1) || index < 0)
+	std::cout << "leo : "<< index << std::endl;
+    if (index <= (*i - 1) && (index >= 0 && index <= (*i - 1)))
     {
-        return (choose_index(i));
+		std::cout << "here\n";
+		//std::cout << "\033c";
+		return (index);
     }
-    std::cout << "\033c";
-    return (index);
+	else
+		return (choose_index(i));
 }
 
 void Contact::all_infos(Contact contact)

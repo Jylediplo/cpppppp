@@ -48,4 +48,7 @@ class ClapTrap
 	_attackDamage(0)
 	{};
 };
+};
+};
+};
 #endif
