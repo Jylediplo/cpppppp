@@ -74,17 +74,33 @@ int choose_index(int *i)
 {
     int index;
     Contact contact;
-    std::cout << "enter index : ";
-    std::cin >> index;
-	std::cout << "leo : "<< index << std::endl;
-    if (index <= (*i - 1) && (index >= 0 && index <= (*i - 1)))
+
+       while (true)
     {
-		std::cout << "here\n";
-		//std::cout << "\033c";
-		return (index);
+        std::cout << "Enter index: ";
+        std::cin >> index;
+
+		if (std::cin.eof())
+		{
+			return (-1);
+		}
+        if (std::cin.fail())
+        {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Invalid input. Please enter a number." << std::endl;
+            continue;
+        }
+
+        if (index >= 0 && index < *i) 
+        {
+            return index;
+        }
+        else
+        {
+            std::cout << "Index out of bounds. Please try again." << std::endl;
+        }
     }
-	else
-		return (choose_index(i));
 }
 
 void Contact::all_infos(Contact contact)
@@ -121,6 +137,8 @@ int    manage_choice(int choice, Phonebook *phonebook, int *i)
         }
         phonebook->show_list(phonebook, i);
         index = choose_index(i);
+		if(index == -1)
+			return(-1);
         phonebook->display_all_infos(phonebook, index);
         return (1);
     }
@@ -128,19 +146,25 @@ int    manage_choice(int choice, Phonebook *phonebook, int *i)
         return (1);
     return (0);
 }
+
+std::string format_field(std::string str)
+{
+	if (str.length() > 10)
+		return (str.substr(0, 8) + ".");
+	return (str);
+}
 void Contact::display_index(Contact contact)
 {
     
     std::string fName;
 
     fName = contact.firstName;
-    if (fName.length() > 10)
-        fName = fName.substr(0, 9) + ".";
     
-    std::cout << contact.id; 
+    
+    std::cout << contact.id;
     std::cout << "| ";
-    std::cout << fName << std::endl;
-
+    std::cout << std::setw(9) << std::right << format_field(contact.firstName) << "| "
+              << std::setw(9) << std::right << format_field(contact.nickName) << "| " << std::endl;
 }
 
 int main(void)
@@ -159,6 +183,8 @@ int main(void)
         if (!choice)
             return (1);
         loop = manage_choice(choice, &phonebook, &i);
+		if (loop == -1)
+			return (-1);
     }
     return (0);
 }
