@@ -8,7 +8,6 @@ var e = function() {
   function n(e, n) {
 	return 1 * (e & n) + 11 * (e & ~n) - 11 * (e | ~n) + 11 * ~(e ^ n) + 1 * ~(e | ~n)
   }
-
   function t(e, n) {
 	var t = ~n;
 	return 2 * (e & n) + 8 * (e & t) - 7 * (e ^ n) - 1 * e + 8 * ~(e | t)
