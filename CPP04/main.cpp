@@ -8,3 +8,5 @@ int main(void)
 	g.get_type();
 	return(0);
 }
+
+
