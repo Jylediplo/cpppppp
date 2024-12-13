@@ -12,4 +12,3 @@ int main(void)
 	// if (std::stoi(str) == 1)
 	// 	std::cout << "bien egal à 1"; 
 	return(0);
-}
