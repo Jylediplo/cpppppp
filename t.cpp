@@ -6,6 +6,7 @@ int main(void)
 	int str;
 
 	std::cin >> str;
+
 	if (!std::cin)
 		printf("not a number");
 	std::cout << std::endl << "str : " << str << std::endl;
