@@ -3,7 +3,7 @@
 int main(int argc, char **argv)
 {
     std::string input;
-    char c;
+    char c; 
 
     if (argc == 1)
     {
