@@ -11,7 +11,7 @@ class HumanA
 
     public:
     void attack();
-    HumanA(Weapon weapon);
+    HumanA(std::string newName, Weapon newWeapon);
 };
 
 #endif

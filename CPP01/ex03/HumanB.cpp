@@ -1,13 +1,14 @@
-#include "Weapon.hpp"
+#include "HumanB.hpp"
 
-class HumanB
+void HumanB::attack(void)
 {
-
-    private:
-    Weapon weapon;
-    std::string name;
-
-    public:
-    void attack();
-
+    std::cout << this->name <<
+    "attacks with their " << this->weapon.getType();
 };
+
+HumanB::HumanB(std::string newName): name(newName)
+{
+    
+};
+
+
