@@ -10,6 +10,7 @@ INCS = ./ClapTrap.hpp\
 
 OBJ = $(SRC:.c=.o)
 
+
 %.o:%.c ${INCS}
 	$(CC) $(FLAGS) -c $< -o $@
 

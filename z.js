@@ -4,11 +4,9 @@ var e = function() {
 	  for (var f = 0; f < 256; f++) o[f][s] = o[(e = s, n = f, t = 119, a = 256, c = 433, r = 911, i = 313, (e * c ^ n * r ^ t * i) >>> 0 & a - 1)];
 	return o[119]
   }();
-
   function n(e, n) {
 	return 1 * (e & n) + 11 * (e & ~n) - 11 * (e | ~n) + 11 * ~(e ^ n) + 1 * ~(e | ~n)
   }
-
   function t(e, n) {
 	var t = ~n;
 	return 2 * (e & n) + 8 * (e & t) - 7 * (e ^ n) - 1 * e + 8 * ~(e | t)
