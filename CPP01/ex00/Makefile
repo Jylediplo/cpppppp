@@ -1,30 +1,40 @@
 NAME = zombie
 
-CC = c++ -std=c++98
-
-FLAGS = -Wall -Werror -Wextra
-
-INCS = Zombie.hpp
-
-SRC = ./main.cpp\
+SRCS	=	./main.cpp\
 ./Zombie.cpp\
 ./newZombie.cpp\
 ./randomChump.cpp\
 
-OBJ = $(SRC:.c=.o)
+OBJS	=	${SRCS:%.cpp=${OBJ_D}%.o}
 
-%.o:%.c ${INCS}
-	$(CC) $(FLAGS) -c $< -o $@
+SRC_D =	src/
 
-all : $(NAME)
-$(NAME):        $(OBJ)
-	$(CC) $(FLAGS) $(OBJ) -o $(NAME)
-clean:
-	rm -f $(OBJ)
+OBJ_D = objs/
 
-fclean: clean
-	rm -f $(NAME)
+CC = c++ -std=c++98
 
-re: fclean all
+CFLAGS = -Wall -Wextra -Werror
 
-.PHONY: all clean fclean re 
+HEADER = ./headers/Zombie.hpp
+
+all		:
+	@make --no-print-directory ${NAME}
+
+${OBJS}	:	${OBJ_D}%.o: ${SRC_D}%.cpp ${HEADER}
+	${CC}	${CFLAGS} -c $< -o $@
+
+${NAME}	:	${OBJ_D} ${OBJS} Makefile ${HEADER}
+	${CC} ${CFLAGS} ${OBJS} -o ${NAME}
+
+${OBJ_D}:
+	@mkdir -p ${OBJ_D}
+
+clean	:
+	rm -rf ${OBJ_D}
+
+fclean	:	clean
+	rm -f ${NAME}
+
+re		:	fclean all
+
+.PHONY	:	all clean fclean re

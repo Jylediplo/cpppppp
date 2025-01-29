@@ -1,27 +1,37 @@
-NAME = zombie
+NAME = sed
 
-CC = c++ -std=c++98
+SRCS	=	./main.cpp\
 
-FLAGS = -Wall -Werror -Wextra -g
+OBJS	=	${SRCS:%.cpp=${OBJ_D}%.o}
 
-INCS = ./main.hpp\
+SRC_D =	src/
 
-SRC = ./main.cpp\
+OBJ_D = objs/
 
-OBJ = $(SRC:.c=.o)
+CC = c++
 
-%.o:%.c ${INCS}
-	$(CC) $(FLAGS) -c $< -o $@
+CFLAGS = -Wall -Wextra -Werror -std=c++98
 
-all : $(NAME)
-$(NAME):        $(OBJ)
-	$(CC) $(FLAGS) $(OBJ) -o $(NAME)
-clean:
-	rm -f $(OBJ)
+HEADER = ./headers/main.hpp
 
-fclean: clean
-	rm -f $(NAME)
+all		:
+	@make --no-print-directory ${NAME}
 
-re: fclean all
+${OBJS}	:	${OBJ_D}%.o: ${SRC_D}%.cpp ${HEADER}
+	${CC}	${CFLAGS} -c $< -o $@
 
-.PHONY: all clean fclean re 
+${NAME}	:	${OBJ_D} ${OBJS} Makefile ${HEADER}
+	${CC} ${CFLAGS} ${OBJS} -o ${NAME}
+
+${OBJ_D}:
+	@mkdir -p ${OBJ_D}
+
+clean	:
+	rm -rf ${OBJ_D}
+
+fclean	:	clean
+	rm -f ${NAME}
+
+re		:	fclean all
+
+.PHONY	:	all clean fclean re

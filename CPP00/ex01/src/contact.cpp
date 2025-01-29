@@ -75,7 +75,7 @@ int choose_index(int *i)
     int index;
     Contact contact;
 
-       while (true)
+    while (true)
     {
         std::cout << "Enter index: ";
         std::cin >> index;

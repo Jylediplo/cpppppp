@@ -1,25 +1,35 @@
 NAME = zombie
 
-CC = c++ -std=c++98
+SRCS	=	./main.cpp\
 
-FLAGS = -Wall -Werror -Wextra -g
+OBJS	=	${SRCS:%.cpp=${OBJ_D}%.o}
 
-SRC = ./main.cpp\
+SRC_D =	src/
 
-OBJ = $(SRC:.c=.o)
+OBJ_D = objs/
 
-%.o:%.c
-	$(CC) $(FLAGS) -c $< -o $@
+CC = c++
 
-all : $(NAME)
-$(NAME):        $(OBJ)
-	$(CC) $(FLAGS) $(OBJ) -o $(NAME)
-clean:
-	rm -f $(OBJ)
+CFLAGS = -Wall -Wextra -Werror -std=c++98
 
-fclean: clean
-	rm -f $(NAME)
+all		:
+	@make --no-print-directory ${NAME}
 
-re: fclean all
+${OBJS}	:	${OBJ_D}%.o: ${SRC_D}%.cpp
+	${CC}	${CFLAGS} -c $< -o $@
 
-.PHONY: all clean fclean re 
+${NAME}	:	${OBJ_D} ${OBJS} Makefile
+	${CC} ${CFLAGS} ${OBJS} -o ${NAME}
+
+${OBJ_D}:
+	@mkdir -p ${OBJ_D}
+
+clean	:
+	rm -rf ${OBJ_D}
+
+fclean	:	clean
+	rm -f ${NAME}
+
+re		:	fclean all
+
+.PHONY	:	all clean fclean re
