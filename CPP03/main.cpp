@@ -1,9 +1,9 @@
-#include "ClapTrap.hpp"
+ #include "ClapTrap.hpp"
 
 
 int main(void)
 {
-	ClapTrap un("leo");
+ 	ClapTrap un("leo");
 	ClapTrap deux("lucas");
 
 	un.attack("lucas");
