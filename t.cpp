@@ -1,5 +1,5 @@
 #include <iostream>
-<<<<<<< HEAD
+<<<<<<< H
 
 	class Weapon
 	{
