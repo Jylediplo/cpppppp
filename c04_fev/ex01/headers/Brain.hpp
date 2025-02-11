@@ -2,22 +2,18 @@
 #define BRAIN_HPP
 
 #include <iostream>
+#include <string>
 
 class Brain
 {
 	public:
 	Brain();
 	Brain(const Brain &other);
-	Brain(const std::string &type);
 	Brain &operator=(const Brain &other);
 	virtual ~Brain();
-	const std::string &getType() const;
-	virtual void makeSound() const;
+	std::string getIdea(int i);
 
 	protected:
-	std::string _type;
-
-	private:
 	std::string _ideas[100];
 };
 

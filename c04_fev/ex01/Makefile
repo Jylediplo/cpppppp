@@ -9,7 +9,8 @@ SRCS	= main.cpp \
 		  Dog.cpp \
 		  Cat.cpp \
 		  WrongAnimal.cpp \
-		  WrongCat.cpp 
+		  WrongCat.cpp \
+		  Brain.cpp
       
 OBJS	= $(SRCS:%.cpp=$(OBJ_D)%.o)
 
