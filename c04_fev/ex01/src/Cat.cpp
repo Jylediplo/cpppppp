@@ -1,4 +1,4 @@
-#include "../headers/Cat.hpp"
+ #include "../headers/Cat.hpp"
 
 Cat::Cat() :
 	Animal("Cat")
