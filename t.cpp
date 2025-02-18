@@ -5,7 +5,7 @@
 		private:
 		int nb;
 		public:
-		void setNb(int nou)
+		void setNb(int nou) 
 		{
 			this->nb = nou;
 		};
