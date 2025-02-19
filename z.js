@@ -1,4 +1,4 @@
-var e = function() {
+ var e = function() {
 	for (var e, n, t, a, c, r, i, o = [], u = 0; u < 256; u++) o[u] = new Array(999);
 	for (var s = 0; s < 999; s++)
 	  for (var f = 0; f < 256; f++) o[f][s] = o[(e = s, n = f, t = 119, a = 256, c = 433, r = 911, i = 313, (e * c ^ n * r ^ t * i) >>> 0 & a - 1)];
