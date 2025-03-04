@@ -38,7 +38,6 @@ public:
 private:
     const std::string _name;
     int _grade;
-
     void checkGrade() const;
 };
 

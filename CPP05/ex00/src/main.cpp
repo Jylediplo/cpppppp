@@ -1,6 +1,5 @@
 #include "../headers/Bureaucrat.hpp"
 
-
 int main()
 {
     try
