@@ -6,6 +6,7 @@ CFLAGS	= -Wall -Wextra -Werror -std=c++98 -g -MD -MP
 
 SRCS	= main.cpp \
 		Bureaucrat.cpp \
+		Form.cpp \
       
 OBJS	= $(SRCS:%.cpp=$(OBJ_D)%.o)
 

@@ -1,4 +1,4 @@
-objects/main.o: src/main.cpp src/../headers/Bureaucrat.hpp \
+objects/Form.o: src/Form.cpp src/../headers/Form.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/iostream \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/x86_64-linux-gnu/c++/12/bits/c++config.h \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/x86_64-linux-gnu/c++/12/bits/os_defines.h \
@@ -124,9 +124,9 @@ objects/main.o: src/main.cpp src/../headers/Bureaucrat.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/bits/ostream.tcc \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/istream \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/bits/istream.tcc \
-  src/../headers/Form.hpp headers/../headers/Bureaucrat.hpp
+  headers/../headers/Bureaucrat.hpp
 
-src/../headers/Bureaucrat.hpp:
+src/../headers/Form.hpp:
 
 /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/iostream:
 
@@ -389,7 +389,5 @@ src/../headers/Bureaucrat.hpp:
 /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/istream:
 
 /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/bits/istream.tcc:
-
-src/../headers/Form.hpp:
 
 headers/../headers/Bureaucrat.hpp:

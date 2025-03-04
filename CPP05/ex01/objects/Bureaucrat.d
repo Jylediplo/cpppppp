@@ -123,7 +123,8 @@ objects/Bureaucrat.o: src/Bureaucrat.cpp src/../headers/Bureaucrat.hpp \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/bits/basic_ios.tcc \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/bits/ostream.tcc \
   /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/istream \
-  /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/bits/istream.tcc
+  /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/bits/istream.tcc \
+  src/../headers/Form.hpp headers/../headers/Bureaucrat.hpp
 
 src/../headers/Bureaucrat.hpp:
 
@@ -388,3 +389,7 @@ src/../headers/Bureaucrat.hpp:
 /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/istream:
 
 /usr/bin/../lib/gcc/x86_64-linux-gnu/12/../../../../include/c++/12/bits/istream.tcc:
+
+src/../headers/Form.hpp:
+
+headers/../headers/Bureaucrat.hpp:
