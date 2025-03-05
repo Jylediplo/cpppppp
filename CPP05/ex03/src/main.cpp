@@ -20,6 +20,7 @@ int main() {
     form = intern.makeForm("presidential pardon", "Alice");
     if (form)
     {
+        std::cout << form->getName() << std::endl;
         delete form;
     }
 
