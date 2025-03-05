@@ -7,6 +7,8 @@
 class Intern {
 public:
     Intern();
+    Intern(const Intern& other);
+    Intern& operator=(const Intern& other);
     ~Intern();
     AForm* makeForm(const std::string& formName, const std::string& target);
 
@@ -16,7 +18,8 @@ private:
     AForm* createPresidentialPardonForm(const std::string& target);
 
     typedef AForm* (Intern::*FormCreator)(const std::string&);
-    struct FormType {
+    struct FormType
+    {
         std::string name;
         FormCreator creator;
     };

@@ -5,7 +5,6 @@
 #include <iostream>
 
 Intern::Intern() {}
-
 Intern::~Intern() {}
 
 AForm* Intern::createShrubberyCreationForm(const std::string& target)
@@ -30,9 +29,12 @@ const Intern::FormType Intern::formTypes[3] =
     {"presidential pardon", &Intern::createPresidentialPardonForm}
 };
 
-AForm* Intern::makeForm(const std::string& formName, const std::string& target) {
-    for (int i = 0; i < 3; ++i) {
-        if (formName == formTypes[i].name) {
+AForm* Intern::makeForm(const std::string& formName, const std::string& target)
+{
+    for (int i = 0; i < 3; ++i)
+    {
+        if (formName == formTypes[i].name)
+        {
             AForm* form = (this->*(formTypes[i].creator))(target);
             std::cout << "Intern creates " << formName << std::endl;
             return form;

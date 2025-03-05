@@ -5,11 +5,11 @@ int main()
 {
     try
     {
-        Bureaucrat b1("John", 1);
-        Bureaucrat b2("Doe", 150);
+        Bureaucrat b1("tom", 1);
+        Bureaucrat b2("tibo", 149);
 
         Form f1("Tax Form", 1, 1);
-        Form f2("Application Form", 150, 150);
+        Form f2("Application Form", 150, 140);
 
         std::cout << b1 << std::endl;
         std::cout << b2 << std::endl;

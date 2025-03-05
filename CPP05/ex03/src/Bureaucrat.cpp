@@ -1,6 +1,8 @@
 #include "../headers/Bureaucrat.hpp"
 #include "../headers/AForm.hpp"
 
+Bureaucrat::Bureaucrat() : _name("unknown"), _grade(0) {}
+
 Bureaucrat::Bureaucrat(const std::string &name, int grade) : _name(name), _grade(grade)
 {
     checkGrade();
@@ -95,6 +97,6 @@ void Bureaucrat::signForm(AForm &form)
 
 std::ostream &operator<<(std::ostream &os, const Bureaucrat &bureaucrat)
 {
-    os << bureaucrat.getName() << ", bureaucrat grade " << bureaucrat.getGrade() << ".";
+    os << bureaucrat.getName() << ", bureaucrat grade " << bureaucrat.getGrade();
     return os;
 }

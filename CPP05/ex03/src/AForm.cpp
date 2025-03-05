@@ -1,5 +1,7 @@
 #include "AForm.hpp"
 
+AForm::AForm() : _name("unknown"), _isSigned(false), _gradeToSign(0), _gradeToExecute(0) {}
+
 AForm::AForm(const std::string &name, int gradeToSign, int gradeToExecute)
     : _name(name), _isSigned(false), _gradeToSign(gradeToSign), _gradeToExecute(gradeToExecute)
 {
@@ -85,6 +87,6 @@ std::ostream &operator<<(std::ostream &os, const AForm &form)
 {
     os << "Form " << form.getName() << ", status: " << (form.isSigned() ? "signed" : "unsigned")
        << ", grade required to sign: " << form.getGradeToSign()
-       << ", grade required to execute: " << form.getGradeToExecute() << ".";
+       << ", grade required to execute: " << form.getGradeToExecute();
     return os;
 }

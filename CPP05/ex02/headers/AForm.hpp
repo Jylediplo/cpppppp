@@ -2,7 +2,6 @@
 #define AFORM_HPP
 
 #include <iostream>
-#include <string>
 #include <exception>
 #include "../headers/Bureaucrat.hpp"
 
@@ -11,16 +10,15 @@ class Bureaucrat;
 class AForm
 {
 public:
+    AForm();
     AForm(const std::string &name, int gradeToSign, int gradeToExecute);
     AForm(const AForm &other);
     AForm &operator=(const AForm &other);
     virtual ~AForm();
-
     const std::string &getName() const;
     bool isSigned() const;
     int getGradeToSign() const;
     int getGradeToExecute() const;
-
     void beSigned(const Bureaucrat &bureaucrat);
     virtual void execute(const Bureaucrat &executor) const = 0;
 
@@ -50,7 +48,6 @@ private:
     bool _isSigned;
     const int _gradeToSign;
     const int _gradeToExecute;
-
     void checkGrades() const;
 };
 

@@ -1,5 +1,8 @@
 #include "../headers/Form.hpp"
 
+Form::Form()
+    : _name("unknown"), _isSigned(false), _gradeToSign(0), _gradeToExecute(0) {}
+
 Form::Form(const std::string &name, int gradeToSign, int gradeToExecute)
     : _name(name), _isSigned(false), _gradeToSign(gradeToSign), _gradeToExecute(gradeToExecute)
 {
@@ -70,8 +73,8 @@ const char *Form::GradeTooLowException::what() const throw()
 
 std::ostream &operator<<(std::ostream &os, const Form &form)
 {
-    os << "Form " << form.getName() << ", status: " << (form.isSigned() ? "signed" : "unsigned")
+    os << "Form " << form.getName() << " status: " << (form.isSigned() ? "signed" : "unsigned")
        << ", grade required to sign: " << form.getGradeToSign()
-       << ", grade required to execute: " << form.getGradeToExecute() << ".";
+       << ", grade required to execute: " << form.getGradeToExecute();
     return os;
 }
