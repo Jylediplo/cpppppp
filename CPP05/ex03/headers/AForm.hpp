@@ -2,11 +2,8 @@
 #define AFORM_HPP
 
 #include <iostream>
-#include <string>
 #include <exception>
 #include "../headers/Bureaucrat.hpp"
-
-class Bureaucrat;
 
 class AForm
 {

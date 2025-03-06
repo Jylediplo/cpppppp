@@ -63,13 +63,9 @@ void Bureaucrat::decrementGrade()
 void Bureaucrat::checkGrade() const
 {
     if (_grade < 1)
-    {
         throw GradeTooHighException();
-    }
     else if (_grade > 150)
-    {
         throw GradeTooLowException();
-    }
 }
 
 const char *Bureaucrat::GradeTooHighException::what() const throw()

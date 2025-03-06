@@ -5,8 +5,6 @@
 #include <exception>
 #include "../headers/Bureaucrat.hpp"
 
-class Bureaucrat;
-
 class AForm
 {
 public:

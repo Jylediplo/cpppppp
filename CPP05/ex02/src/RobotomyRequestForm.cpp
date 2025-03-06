@@ -27,7 +27,6 @@ RobotomyRequestForm::~RobotomyRequestForm() {}
 void RobotomyRequestForm::execute(const Bureaucrat &executor) const
 {
     checkExecutionRequirements(executor);
-
     std::cout << "Drilling noises... Brrrrrrrrrrrrrr!" << std::endl;
     std::srand(std::time(0));
     if (std::rand() % 2 == 0)
