@@ -29,7 +29,6 @@ int main()
             std::cout << b2 << std::endl;,
             "Bureaucrat b2 Error"
         );
-
         RUN(
             Bureaucrat b3("error", 151);,
             "Bureaucrat b3 Error"
