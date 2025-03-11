@@ -16,5 +16,5 @@ Array<T>::Array(unsigned int n)
 int main(void)
 {
     Array<int> one(5);
-    return (0);
+    return (0); 
 }
