@@ -16,5 +16,7 @@ Array<T>::Array(unsigned int n)
 int main(void)
 {
     Array<int> one(5);
+    int *a = new int(1);
+    std::cout << *a << std::endl;
     return (0); 
 }
