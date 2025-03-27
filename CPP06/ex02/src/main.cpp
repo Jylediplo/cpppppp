@@ -10,9 +10,12 @@ Base *generate(void)
 {
     std::srand(std::time(0));
     int randomNb = std::rand() % 3;
-    if (randomNb == 0) return (new A());
-    else if (randomNb == 1) return (new B());
-    else return (new C());
+    if (randomNb == 0)
+		return (new A());
+    else if (randomNb == 1)
+		return (new B());
+    else
+		return (new C());
 }
 
 void identify(Base *p)
