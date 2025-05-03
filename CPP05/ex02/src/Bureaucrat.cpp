@@ -1,4 +1,4 @@
-#include "../headers/Bureaucrat.hpp"
+ #include "../headers/Bureaucrat.hpp"
 #include "../headers/AForm.hpp"
 
 Bureaucrat::Bureaucrat() : _name("unknown"), _grade(0) {}
