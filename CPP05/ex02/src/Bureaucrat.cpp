@@ -2,7 +2,7 @@
 #include "../headers/AForm.hpp"
 
 Bureaucrat::Bureaucrat() : _name("unknown"), _grade(0) {}
-
+ 
 Bureaucrat::Bureaucrat(const std::string &name, int grade) : _name(name), _grade(grade)
 {
     checkGrade();
