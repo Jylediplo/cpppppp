@@ -1,4 +1,4 @@
-#include "../headers/Array.hpp"
+ #include "../headers/Array.hpp"
 
 template<typename T>
 Array<T>::Array()
