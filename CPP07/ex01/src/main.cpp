@@ -16,7 +16,7 @@ void iter(T &array, size_t len, U anyType)
 }
 
 int main(void)
-{
+{ 
     float nb[3] = {1.0f, 3, 4.5f};
     std::string sentence[] = {"tibo", "ok"};
 
