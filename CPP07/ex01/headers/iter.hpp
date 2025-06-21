@@ -1,12 +1,15 @@
 #ifndef ITER_HPP
 #define ITER_HPP
 
-#include <iostream>
+#include <iostream> // pour size_t
 
-template<typename T, typename U>
-void iter(T &arrayAddy, size_t arrayLen, U foo);
-
-template<typename T>
-void foo(int i);
+template <typename T, typename F>
+void iter(T *array, size_t length, F func)
+{
+    for (size_t i = 0; i < length; ++i)
+    {
+        func(array[i]);
+    }
+}
 
 #endif

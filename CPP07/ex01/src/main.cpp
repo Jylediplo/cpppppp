@@ -1,28 +1,40 @@
-// #include "../headers/iter.hpp"
-#include <iostream>
+// #include <iostream>
+#include "../headers/iter.hpp"
 
-template<typename T>
-void anyType(T value)
+template <typename T>
+void printElement(const T &element)
 {
-    std::cout << "display array : " << value << std::endl;
-}
-template<typename T, typename U>
-void iter(T &array, size_t len, U anyType)
-{
-    for(size_t i = 0; i < len; i++)
-    {
-        anyType(array[i]);
-    }
+    std::cout << element << std::endl;
 }
 
-int main(void)
-{ 
-    float nb[3] = {1.0f, 3, 4.5f};
-    std::string sentence[] = {"tibo", "ok"};
+template <typename T>
+void increment(T &element)
+{
+    ++element;
+}
 
-    iter(nb, 3, anyType<float>);
-    iter(sentence, 2, anyType<std::string>);
+int main()
+{
+    int intArray[5] = {1, 2, 3, 4, 5};
+
+    std::cout << "Int array before increment:" << std::endl;
+    iter(intArray, 5, printElement<int>);
+
+    iter(intArray, 5, increment<int>);
+
+    std::cout << "Int array after increment:" << std::endl;
+    iter(intArray, 5, printElement<int>);
+
+    float floatArray[3] = {1.1f, 2.2f, 3.3f};
+    iter(floatArray, 3, printElement<float>);
+    iter(floatArray, 3, increment<float>);
+    iter(floatArray, 3, printElement<float>);
 
 
-    return (0);
-} 
+    std::string strArray[3] = {"hello", "world", "!"};
+
+    std::cout << "String array:" << std::endl;
+    iter(strArray, 3, printElement<std::string>);
+
+    return 0;
+}

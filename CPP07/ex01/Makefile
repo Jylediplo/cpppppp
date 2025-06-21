@@ -5,7 +5,6 @@ CXX	 	= c++
 CFLAGS	= -Wall -Wextra -Werror -std=c++98 -g -MD -MP
 
 SRCS	= main.cpp \
-		  iter.cpp \
 
 OBJS	= $(SRCS:%.cpp=$(OBJ_D)%.o)
 
