@@ -1,22 +1,25 @@
 #include "../headers/Array.hpp"
 
-template<typename T>
-Array<T>::Array()
+int main()
 {
-    std::cout << "Basic function" << std::endl;
-    this->_array = new T();
-}
-template<typename T>
-Array<T>::Array(unsigned int n)
-{
-    std::cout << "unsigned function" << std::endl;
-    this->_array = new T[n];
-}
+    Array<int> u;
+    Array<int> a(5);
 
-int main(void)
-{
-    Array<int> one(5);
-    int *a = new int(1);
-    std::cout << *a << std::endl;
-    return (0); 
+    for (unsigned int i = 0; i < a.size(); ++i)
+        a[i] = i * 10;
+
+    for (unsigned int i = 0; i < a.size(); ++i)
+        std::cout << a[i] << std::endl;
+
+    try {
+        std::cout << a[10] << std::endl; // doit throw
+    } catch (std::exception& e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+    }
+
+    Array<int> b = a;
+    b[0] = 42;
+    std::cout << "a[0] = " << a[0] << ", b[0] = " << b[0] << std::endl;
+
+    return 0;
 }
