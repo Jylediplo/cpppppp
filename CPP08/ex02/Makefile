@@ -1,11 +1,10 @@
-NAME 	= Span
+NAME 	= Mutant
 
 CXX	 	= c++
 
 CFLAGS	= -Wall -Wextra -Werror -std=c++98 -g -MD -MP
 
 SRCS	= main.cpp \
-		  Span.cpp \
       
 OBJS	= $(SRCS:%.cpp=$(OBJ_D)%.o)
 
