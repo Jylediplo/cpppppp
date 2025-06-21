@@ -17,5 +17,11 @@ int main(void)
     std::cout << "c = " << c << ", d = " << d << std::endl;
     std::cout << "min(c, d) = " << ::min(c, d) << std::endl;
     std::cout << "max(c, d) = " << ::max(c, d) << std::endl;
+
+    int y = 2;
+    int z = 2;
+    std::cout << "addy y : " << &y << std::endl;
+    std::cout << "addy z : " << &z << std::endl;
+    std::cout << "min(2 == 2) = " << &(::max(y,z)) << std::endl;
     return 0;
 }
