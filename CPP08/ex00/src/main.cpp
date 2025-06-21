@@ -7,20 +7,30 @@ const char * NoOccurenceException::what() const throw()
 
 int main(void)
 {
-    std::vector<int>    intArray;
+    std::vector<int> vec;
+    std::list<int> lst;
 
-    intArray.push_back(5);
-    intArray.push_back(4);
-    intArray.push_back(3);
-    intArray.push_back(2);
+    vec.push_back(5);
+    vec.push_back(4);
+    vec.push_back(3);
+    vec.push_back(2);
 
-    try
-    {
-        easyfind(intArray, 0);
+    lst.push_back(10);
+    lst.push_back(20);
+    lst.push_back(30);
+
+    try {
+        easyfind(vec, 3);   // trouvé
+        easyfind(vec, 9);   // pas trouvé
+    } catch (const std::exception& e) {
+        std::cerr << e.what() << std::endl;
     }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
+
+    try {
+        easyfind(lst, 20);  // trouvé
+        easyfind(lst, 99);  // pas trouvé
+    } catch (const std::exception& e) {
+        std::cerr << e.what() << std::endl;
     }
-    return 0;
+    return (0);
 }
