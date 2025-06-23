@@ -1,4 +1,4 @@
-NAME 	= Whatever
+NAME 	= Iter
 
 CXX	 	= c++
 

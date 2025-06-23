@@ -2,21 +2,19 @@
 #define ARRAY_HPP
 
 #include <iostream>
-#include <stdexcept>
 
 template<typename T>
 class Array
 {
 public:
-    Array();                           // Default constructor
-    Array(unsigned int n);            // Constructor with size
-    Array(const Array& other);        // Copy constructor
-    Array& operator=(const Array& other); // Assignment operator
-    ~Array();                         // Destructor
+    Array();                          
+    Array(unsigned int n);           
+    Array(const Array& other);       
+    Array& operator=(const Array& other);
+    ~Array();                         
 
     T& operator[](unsigned int index);
     const T& operator[](unsigned int index) const;
-
     unsigned int size() const;
 
 private:
@@ -24,7 +22,6 @@ private:
     unsigned int _size;
 };
 
-// Implementation
 
 template<typename T>
 Array<T>::Array() : _array(NULL), _size(0) {}
@@ -46,7 +43,7 @@ Array<T>& Array<T>::operator=(const Array& other)
     {
         delete[] _array;
         _size = other._size;
-        _array = new T[_size];
+        _array = (_size ? new T[_size] : NULL);
         for (unsigned int i = 0; i < _size; ++i)
             _array[i] = other._array[i];
     }
