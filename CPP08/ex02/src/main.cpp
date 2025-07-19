@@ -2,7 +2,7 @@
 #include <iostream>
 #include <list>
 #include <vector>
-
+ 
 void testSubjectExample()
 {
     std::cout << "=== Test de l'exemple du sujet ===" << std::endl;
