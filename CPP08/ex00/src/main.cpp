@@ -20,15 +20,15 @@ int main(void)
     lst.push_back(30);
 
     try {
-        easyfind(vec, 3);   // trouvé
-        easyfind(vec, 9);   // pas trouvé
+        easyfind(vec, 3);
+        easyfind(vec, 9);
     } catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
     }
 
     try {
-        easyfind(lst, 20);  // trouvé
-        easyfind(lst, 99);  // pas trouvé
+        easyfind(lst, 20);
+        easyfind(lst, 99);
     } catch (const std::exception& e) {
         std::cerr << e.what() << std::endl;
     }
