@@ -8,19 +8,16 @@ template<typename T>
 class MutantStack : public std::stack<T>
 {
 public:
-    // Constructeurs et destructeur (forme canonique de Coplien)
     MutantStack();
     MutantStack(const MutantStack& other);
     MutantStack& operator=(const MutantStack& other);
     ~MutantStack();
 
-    // Types d'itérateurs
     typedef typename std::stack<T>::container_type::iterator iterator;
     typedef typename std::stack<T>::container_type::const_iterator const_iterator;
     typedef typename std::stack<T>::container_type::reverse_iterator reverse_iterator;
     typedef typename std::stack<T>::container_type::const_reverse_iterator const_reverse_iterator;
 
-    // Fonctions d'itérateurs
     iterator begin();
     iterator end();
     const_iterator begin() const;
@@ -30,8 +27,6 @@ public:
     const_reverse_iterator rbegin() const;
     const_reverse_iterator rend() const;
 };
-
-// Implémentation des fonctions template dans le header
 
 template<typename T>
 MutantStack<T>::MutantStack() : std::stack<T>()

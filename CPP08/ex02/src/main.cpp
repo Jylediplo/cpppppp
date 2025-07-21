@@ -151,7 +151,7 @@ void testCopyAndAssignment()
 
 void testWithStrings()
 {
-    std::cout << "=== Test avec des strings ===" << std::endl;
+    std::cout << "=== Test with strings ===" << std::endl;
     
     MutantStack<std::string> sstack;
     
@@ -170,11 +170,11 @@ void testWithStrings()
 
 void testEmptyStack()
 {
-    std::cout << "=== Test stack vide ===" << std::endl;
+    std::cout << "=== Test empty stack ===" << std::endl;
     
     MutantStack<int> empty_stack;
     
-    std::cout << "Stack vide - taille: " << empty_stack.size() << std::endl;
+    std::cout << "Empty stack - size: " << empty_stack.size() << std::endl;
     std::cout << "begin() == end(): " << (empty_stack.begin() == empty_stack.end() ? "true" : "false") << std::endl;
     
     std::cout << std::endl;
@@ -192,7 +192,7 @@ int main()
     testWithStrings();
     testEmptyStack();
     
-    std::cout << "================ TOUS LES TESTS TERMINÉS ================" << std::endl;
+    std::cout << "================ Tests done ================" << std::endl;
     
     return 0;
 }
