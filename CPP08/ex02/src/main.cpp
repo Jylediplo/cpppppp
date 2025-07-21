@@ -123,7 +123,7 @@ void testConstIterators()
 
 void testCopyAndAssignment()
 {
-    std::cout << "=== Test constructeur de copie et assignation ===" << std::endl;
+    std::cout << "=== Test copy constructor and assignation ===" << std::endl;
     
     MutantStack<int> original;
     original.push(42);

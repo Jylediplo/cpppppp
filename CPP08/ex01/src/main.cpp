@@ -45,7 +45,7 @@ void testExceptions()
     }
     catch(const Span::NoSpanFoundException& e)
     {
-        std::cout << "Exception expected: " << e.what() << std::endl;
+        std::cout << "Expected exception: " << e.what() << std::endl;
     }
     
     try
@@ -55,7 +55,7 @@ void testExceptions()
     }
     catch(const Span::NoSpanFoundException& e)
     {
-        std::cout << "Exception expected: " << e.what() << std::endl;
+        std::cout << "Expected exception: " << e.what() << std::endl;
     }
     
     std::cout << std::endl;
