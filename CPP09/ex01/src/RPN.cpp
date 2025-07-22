@@ -83,7 +83,6 @@ void RPN::processToken(const std::string& token)
 
 int RPN::calculate(const std::string& expression)
 {
-    // Clear stack for new calculation
     while (!_stack.empty())
         _stack.pop();
     
