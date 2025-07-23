@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisation Ford-Johnson Algorithm</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        input, button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        input {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            min-width: 300px;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px 0 rgba(255, 107, 107, 0.3);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px 0 rgba(255, 107, 107, 0.4);
+        }
+        
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .step-info {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border-left: 5px solid #4ecdc4;
+        }
+        
+        .step-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #4ecdc4;
+        }
+        
+        .visualization {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            min-height: 200px;
+        }
+        
+        .array-container {
+            margin: 15px 0;
+        }
+        
+        .array-label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #ffd93d;
+        }
+        
+        .array {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .element {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .element:hover {
+            transform: scale(1.05);
+        }
+        
+        .pair {
+            display: flex;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            border-radius: 12px;
+            border: 2px solid #ff6b6b;
+        }
+        
+        .pair .element {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+        }
+        
+        .main-chain .element {
+            background: linear-gradient(45deg, #6c5ce7, #a29bfe);
+        }
+        
+        .pending .element {
+            background: linear-gradient(45deg, #fd79a8, #fdcb6e);
+        }
+        
+        .jacobsthal-info {
+            background: rgba(255, 215, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 1px solid #ffd93d;
+        }
+        
+        .insertion-step {
+            background: rgba(76, 175, 80, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .highlight {
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .navigation {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .nav-button {
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Algorithme Ford-Johnson (Merge-Insert Sort)</h1>
+        
+        <div class="controls">
+            <input type="text" id="inputNumbers" placeholder="Entrez des nombres séparés par des espaces (ex: 3 5 9 7 4 1 8 2)" value="3 5 9 7 4 1 8 2">
+            <button onclick="startVisualization()">Démarrer la visualisation</button>
+            <button onclick="resetVisualization()">Reset</button>
+        </div>
+        
+        <div id="stepInfo" class="step-info" style="display: none;">
+            <div class="step-title" id="stepTitle"></div>
+            <div id="stepDescription"></div>
+        </div>
+        
+        <div id="visualization" class="visualization"></div>
+        
+        <div class="navigation">
+            <button class="nav-button" onclick="previousStep()" id="prevBtn" disabled>⬅ Précédent</button>
+            <button class="nav-button" onclick="nextStep()" id="nextBtn" disabled>Suivant ➡</button>
+            <button class="nav-button" onclick="autoPlay()" id="autoBtn" disabled>🎬 Auto</button>
+        </div>
+    </div>
+
+    <script>
+        let currentArray = [];
+        let steps = [];
+        let currentStep = -1;
+        let isAutoPlaying = false;
+
+        function generateJacobsthalSequence(n) {
+            if (n <= 0) return [];
+            let jacobsthal = [1];
+            if (n === 1) return jacobsthal;
+            jacobsthal.push(1);
+            
+            for (let i = 2; i < n; i++) {
+                let next = jacobsthal[i-1] + 2 * jacobsthal[i-2];
+                if (next > n) break;
+                jacobsthal.push(next);
+            }
+            return jacobsthal;
+        }
+
+        function createPairs(arr) {
+            let pairs = [];
+            for (let i = 0; i < arr.length - 1; i += 2) {
+                let larger = Math.max(arr[i], arr[i+1]);
+                let smaller = Math.min(arr[i], arr[i+1]);
+                pairs.push([larger, smaller]);
+            }
+            return pairs;
+        }
+
+        function sortPairs(pairs) {
+            return pairs.sort((a, b) => a[0] - b[0]);
+        }
+
+        function startVisualization() {
+            const input = document.getElementById('inputNumbers').value.trim();
+            if (!input) return;
+            
+            currentArray = input.split(' ').map(n => parseInt(n)).filter(n => !isNaN(n) && n > 0);
+            if (currentArray.length === 0) return;
+            
+            steps = [];
+            currentStep = -1;
+            
+            generateSteps();
+            
+            document.getElementById('stepInfo').style.display = 'block';
+            document.getElementById('nextBtn').disabled = false;
+            document.getElementById('autoBtn').disabled = false;
+            
+            showStep(0);
+        }
+
+        function generateSteps() {
+            let arr = [...currentArray];
+            
+            // Étape 1: Array initial
+            steps.push({
+                title: "Étape 1: Séquence initiale",
+                description: "Voici la séquence de nombres à trier avec l'algorithme Ford-Johnson.",
+                arrays: [{label: "Tableau initial", data: [...arr], type: "normal"}]
+            });
+
+            // Étape 2: Gestion du nombre impair
+            let hasOdd = arr.length % 2 === 1;
+            let oddElement = null;
+            if (hasOdd) {
+                oddElement = arr.pop();
+                steps.push({
+                    title: "Étape 2: Gestion de l'élément impair",
+                    description: `Le tableau a un nombre impair d'éléments. L'élément ${oddElement} est mis de côté et sera inséré à la fin.`,
+                    arrays: [
+                        {label: "Tableau (pairs)", data: [...arr], type: "normal"},
+                        {label: "Élément impair", data: [oddElement], type: "pending"}
+                    ]
+                });
+            }
+
+            // Étape 3: Création des paires
+            let pairs = createPairs(arr);
+            steps.push({
+                title: "Étape 3: Formation des paires",
+                description: "Les éléments sont groupés par paires. Dans chaque paire, le plus grand élément est placé en premier.",
+                arrays: [{label: "Paires (grand, petit)", data: pairs, type: "pairs"}]
+            });
+
+            // Étape 4: Tri des paires
+            let sortedPairs = sortPairs([...pairs]);
+            steps.push({
+                title: "Étape 4: Tri des paires",
+                description: "Les paires sont triées selon leur plus grand élément (premier élément de chaque paire).",
+                arrays: [{label: "Paires triées", data: sortedPairs, type: "pairs"}]
+            });
+
+            // Étape 5: Création des chaînes
+            let mainChain = sortedPairs.map(pair => pair[0]);
+            let pendingElements = sortedPairs.map(pair => pair[1]);
+            
+            steps.push({
+                title: "Étape 5: Séparation en chaînes",
+                description: "Séparation en chaîne principale (grands éléments) et éléments en attente (petits éléments).",
+                arrays: [
+                    {label: "Chaîne principale", data: [...mainChain], type: "main"},
+                    {label: "Éléments en attente", data: [...pendingElements], type: "pending"}
+                ]
+            });
+
+            // Étape 6: Suite de Jacobsthal
+            let jacobsthal = generateJacobsthalSequence(pendingElements.length);
+            steps.push({
+                title: "Étape 6: Suite de Jacobsthal",
+                description: `La suite de Jacobsthal (${jacobsthal.join(', ')}) détermine l'ordre optimal d'insertion pour minimiser les comparaisons.`,
+                arrays: [
+                    {label: "Chaîne principale", data: [...mainChain], type: "main"},
+                    {label: "Éléments en attente", data: [...pendingElements], type: "pending"}
+                ],
+                jacobsthal: jacobsthal
+            });
+
+            // Étapes d'insertion selon Jacobsthal
+            let inserted = new Array(pendingElements.length).fill(false);
+            let workingChain = [...mainChain];
+            
+            for (let i = 0; i < jacobsthal.length; i++) {
+                let idx = jacobsthal[i] - 1;
+                if (idx < pendingElements.length && !inserted[idx]) {
+                    let element = pendingElements[idx];
+                    let insertPos = binarySearchPosition(workingChain, element);
+                    workingChain.splice(insertPos, 0, element);
+                    inserted[idx] = true;
+                    
+                    steps.push({
+                        title: `Étape ${steps.length}: Insertion de ${element}`,
+                        description: `Insertion de l'élément ${element} (position ${idx + 1} de Jacobsthal) à la position ${insertPos} par recherche binaire.`,
+                        arrays: [
+                            {label: "Chaîne en cours", data: [...workingChain], type: "main"},
+                            {label: "Reste à insérer", data: pendingElements.filter((_, i) => !inserted[i]), type: "pending"}
+                        ],
+                        insertedElement: element,
+                        insertPosition: insertPos
+                    });
+                }
+            }
+
+            // Insertion des éléments restants
+            for (let i = 0; i < pendingElements.length; i++) {
+                if (!inserted[i]) {
+                    let element = pendingElements[i];
+                    let insertPos = binarySearchPosition(workingChain, element);
+                    workingChain.splice(insertPos, 0, element);
+                    
+                    steps.push({
+                        title: `Étape ${steps.length}: Insertion de ${element}`,
+                        description: `Insertion de l'élément restant ${element} à la position ${insertPos}.`,
+                        arrays: [
+                            {label: "Chaîne en cours", data: [...workingChain], type: "main"},
+                            {label: "Reste à insérer", data: pendingElements.filter((_, idx) => idx > i && !inserted[idx]), type: "pending"}
+                        ],
+                        insertedElement: element,
+                        insertPosition: insertPos
+                    });
+                }
+            }
+
+            // Insertion de l'élément impair si présent
+            if (hasOdd) {
+                let insertPos = binarySearchPosition(workingChain, oddElement);
+                workingChain.splice(insertPos, 0, oddElement);
+                
+                steps.push({
+                    title: `Étape ${steps.length}: Insertion de l'élément impair`,
+                    description: `Insertion finale de l'élément impair ${oddElement} à la position ${insertPos}.`,
+                    arrays: [
+                        {label: "Résultat final", data: [...workingChain], type: "main"}
+                    ],
+                    insertedElement: oddElement,
+                    insertPosition: insertPos
+                });
+            }
+
+            // Résultat final
+            steps.push({
+                title: "✅ Tri terminé!",
+                description: `Le tableau est maintenant trié avec l'algorithme Ford-Johnson. Complexité: O(n log n) avec un nombre minimal de comparaisons.`,
+                arrays: [{label: "Tableau trié", data: [...workingChain], type: "main"}]
+            });
+        }
+
+        function binarySearchPosition(arr, value) {
+            let left = 0, right = arr.length;
+            while (left < right) {
+                let mid = Math.floor((left + right) / 2);
+                if (arr[mid] < value) {
+                    left = mid + 1;
+                } else {
+                    right = mid;
+                }
+            }
+            return left;
+        }
+
+        function showStep(stepIndex) {
+            if (stepIndex < 0 || stepIndex >= steps.length) return;
+            
+            currentStep = stepIndex;
+            const step = steps[stepIndex];
+            
+            document.getElementById('stepTitle').textContent = step.title;
+            document.getElementById('stepDescription').textContent = step.description;
+            
+            const visualization = document.getElementById('visualization');
+            visualization.innerHTML = '';
+            
+            // Afficher les tableaux
+            step.arrays.forEach(arrayInfo => {
+                const container = document.createElement('div');
+                container.className = 'array-container';
+                
+                const label = document.createElement('div');
+                label.className = 'array-label';
+                label.textContent = arrayInfo.label + ':';
+                container.appendChild(label);
+                
+                const arrayDiv = document.createElement('div');
+                arrayDiv.className = 'array';
+                
+                if (arrayInfo.type === 'pairs') {
+                    arrayInfo.data.forEach(pair => {
+                        const pairDiv = document.createElement('div');
+                        pairDiv.className = 'pair';
+                        
+                        pair.forEach(element => {
+                            const elementDiv = document.createElement('div');
+                            elementDiv.className = 'element';
+                            elementDiv.textContent = element;
+                            pairDiv.appendChild(elementDiv);
+                        });
+                        
+                        arrayDiv.appendChild(pairDiv);
+                    });
+                } else {
+                    arrayInfo.data.forEach((element, index) => {
+                        const elementDiv = document.createElement('div');
+                        elementDiv.className = `element ${arrayInfo.type === 'main' ? 'main-chain' : arrayInfo.type === 'pending' ? 'pending' : ''}`;
+                        elementDiv.textContent = element;
+                        
+                        if (step.insertedElement === element && step.insertPosition !== undefined) {
+                            elementDiv.classList.add('highlight');
+                        }
+                        
+                        arrayDiv.appendChild(elementDiv);
+                    });
+                }
+                
+                container.appendChild(arrayDiv);
+                visualization.appendChild(container);
+            });
+            
+            // Afficher les informations sur Jacobsthal si présentes
+            if (step.jacobsthal) {
+                const jacobsthalDiv = document.createElement('div');
+                jacobsthalDiv.className = 'jacobsthal-info';
+                jacobsthalDiv.innerHTML = `
+                    <strong>Suite de Jacobsthal:</strong> ${step.jacobsthal.join(', ')}<br>
+                    <small>Cette suite détermine l'ordre optimal d'insertion des éléments en attente.</small>
+                `;
+                visualization.appendChild(jacobsthalDiv);
+            }
+            
+            // Mettre à jour les boutons de navigation
+            document.getElementById('prevBtn').disabled = stepIndex === 0;
+            document.getElementById('nextBtn').disabled = stepIndex === steps.length - 1;
+        }
+
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                showStep(currentStep + 1);
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 0) {
+                showStep(currentStep - 1);
+            }
+        }
+
+        function autoPlay() {
+            if (isAutoPlaying) {
+                isAutoPlaying = false;
+                document.getElementById('autoBtn').textContent = '🎬 Auto';
+                return;
+            }
+            
+            isAutoPlaying = true;
+            document.getElementById('autoBtn').textContent = '⏸ Pause';
+            
+            const playNext = () => {
+                if (!isAutoPlaying) return;
+                
+                if (currentStep < steps.length - 1) {
+                    nextStep();
+                    setTimeout(playNext, 2000);
+                } else {
+                    isAutoPlaying = false;
+                    document.getElementById('autoBtn').textContent = '🎬 Auto';
+                }
+            };
+            
+            playNext();
+        }
+
+        function resetVisualization() {
+            steps = [];
+            currentStep = -1;
+            isAutoPlaying = false;
+            document.getElementById('stepInfo').style.display = 'none';
+            document.getElementById('visualization').innerHTML = '';
+            document.getElementById('nextBtn').disabled = true;
+            document.getElementById('prevBtn').disabled = true;
+            document.getElementById('autoBtn').disabled = true;
+            document.getElementById('autoBtn').textContent = '🎬 Auto';
+        }
+
+        // Initialisation avec l'exemple par défaut
+        window.onload = () => {
+            startVisualization();
+        };
+    </script>
+</body>
+</html>

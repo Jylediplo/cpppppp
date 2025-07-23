@@ -31,7 +31,6 @@ bool RPN::isValidNumber(const std::string& token) const
     if (token.empty())
         return false;
     
-    // Check if it's a single digit (0-9)
     if (token.length() == 1 && std::isdigit(token[0]))
         return true;
     
