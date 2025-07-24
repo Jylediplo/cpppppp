@@ -48,18 +48,23 @@ void PmergeMe::parseInput(int argc, char** argv)
     }
 }
 
-std::vector<size_t> PmergeMe::generateJacobsthalSequence(size_t n) {
+std::vector<size_t> PmergeMe::generateJacobsthalSequence(size_t n)
+{
     std::vector<size_t> jacobsthal;
-    if (n == 0) return jacobsthal;
+    if (n == 0)
+        return jacobsthal;
     
     jacobsthal.push_back(1);
-    if (n == 1) return jacobsthal;
+    if (n == 1)
+        return jacobsthal;
     
     jacobsthal.push_back(1);
     
-    for (size_t i = 2; i < n; ++i) {
+    for (size_t i = 2; i < n; ++i)
+    {
         size_t next = jacobsthal[i-1] + 2 * jacobsthal[i-2];
-        if (next > n) break;
+        if (next > n)
+            break;
         jacobsthal.push_back(next);
     }
     
@@ -71,10 +76,13 @@ std::vector<std::pair<int, int> > PmergeMe::createPairsVector(const std::vector<
 {
     std::vector<std::pair<int, int> > pairs;
     
-    for (size_t i = 0; i + 1 < arr.size(); i += 2) {
-        if (arr[i] > arr[i + 1]) {
+    for (size_t i = 0; i + 1 < arr.size(); i += 2)
+    {
+        if (arr[i] > arr[i + 1])
+        {
             pairs.push_back(std::make_pair(arr[i], arr[i + 1]));
-        } else {
+        } else
+        {
             pairs.push_back(std::make_pair(arr[i + 1], arr[i]));
         }
     }
@@ -82,32 +90,23 @@ std::vector<std::pair<int, int> > PmergeMe::createPairsVector(const std::vector<
     return pairs;
 }
 
+
 void PmergeMe::sortPairsVector(std::vector<std::pair<int, int> >& pairs)
 {
-    if (pairs.size() <= 1) return;
+    if (pairs.size() <= 1)
+        return;
     
-    // Recursive merge sort on pairs based on their larger element
-    if (pairs.size() > 1) {
-        std::vector<std::pair<int, int> > left(pairs.begin(), pairs.begin() + pairs.size() / 2);
-        std::vector<std::pair<int, int> > right(pairs.begin() + pairs.size() / 2, pairs.end());
+    for (size_t i = 1; i < pairs.size(); ++i)
+    {
+        std::pair<int, int> key = pairs[i];
+        int j = i - 1;
         
-        sortPairsVector(left);
-        sortPairsVector(right);
-        
-        // Merge
-        size_t i = 0, j = 0, k = 0;
-        while (i < left.size() && j < right.size())
+        while (j >= 0 && pairs[j].first > key.first)
         {
-            if (left[i].first <= right[j].first)
-            {
-                pairs[k++] = left[i++];
-            } else {
-                pairs[k++] = right[j++];
-            }
+            pairs[j + 1] = pairs[j];
+            j--;
         }
-        
-        while (i < left.size()) pairs[k++] = left[i++];
-        while (j < right.size()) pairs[k++] = right[j++];
+        pairs[j + 1] = key;
     }
 }
 
@@ -127,7 +126,8 @@ int PmergeMe::binarySearchVector(const std::vector<int>& arr, int value, int end
 }
 
 void PmergeMe::insertionSortVector(std::vector<int>& mainChain, const std::vector<int>& pendingElements) {
-    if (pendingElements.empty()) return;
+    if (pendingElements.empty())
+        return;
     
     std::vector<size_t> jacobsthal = generateJacobsthalSequence(pendingElements.size());
     std::vector<bool> inserted(pendingElements.size(), false);

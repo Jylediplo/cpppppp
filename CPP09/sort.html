@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tri par Fusion - Visualisation Interactive</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .explanation {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .step {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .step.active {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+            border: 2px solid #667eea;
+        }
+
+        .pair {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 15px;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            border-radius: 25px;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .pair.left {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        }
+
+        .pair.right {
+            background: linear-gradient(45deg, #ffa726, #fb8c00);
+        }
+
+        .pair.merged {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            animation: mergeGlow 0.5s ease;
+        }
+
+        @keyframes mergeGlow {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(102, 126, 234, 0.6); }
+            100% { transform: scale(1); }
+        }
+
+        .array-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+            min-height: 60px;
+            align-items: center;
+        }
+
+        .controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            margin: 0 10px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .code-section {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .highlight {
+            background: rgba(255, 255, 0, 0.3);
+            padding: 2px 4px;
+            border-radius: 3px;
+            animation: highlight 1s ease;
+        }
+
+        @keyframes highlight {
+            0% { background: rgba(255, 255, 0, 0.6); }
+            100% { background: rgba(255, 255, 0, 0.3); }
+        }
+
+        .phase-indicator {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .merge-visualization {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr auto 1fr;
+            gap: 20px;
+            align-items: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .arrow {
+            font-size: 2em;
+            color: #667eea;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .recursion-tree {
+            text-align: center;
+            margin: 20px 0;
+            font-family: monospace;
+        }
+
+        .tree-node {
+            display: inline-block;
+            padding: 10px;
+            margin: 5px;
+            background: #e3f2fd;
+            border-radius: 5px;
+            border: 2px solid #2196f3;
+        }
+
+        .complexity-info {
+            background: linear-gradient(135deg, #e8f5e8, #f0f8e8);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Tri par Fusion des Paires</h1>
+        
+        <div class="explanation">
+            <h2>📋 Explication de la fonction sortPairsVector</h2>
+            <p><strong>Objectif :</strong> Trier un vecteur de paires d'entiers en utilisant l'algorithme de tri par fusion (merge sort).</p>
+            <p><strong>Critère de tri :</strong> Les paires sont triées selon leur <em>premier élément</em> (pair.first).</p>
+            <p><strong>Principe :</strong> Diviser pour régner - divise le tableau en deux, trie chaque moitié récursivement, puis fusionne les résultats.</p>
+        </div>
+
+        <div class="controls">
+            <button onclick="startDemo()">🚀 Démarrer la démo</button>
+            <button onclick="nextStep()" id="nextBtn" disabled>➡️ Étape suivante</button>
+            <button onclick="resetDemo()">🔄 Recommencer</button>
+            <button onclick="generateNewData()">🎲 Nouvelles données</button>
+        </div>
+
+        <div class="phase-indicator" id="phaseIndicator">Phase: Initialisation</div>
+
+        <div class="array-container" id="mainArray">
+            <!-- Les paires seront affichées ici -->
+        </div>
+
+        <div class="step" id="stepDescription">
+            Cliquez sur "Démarrer la démo" pour voir l'algorithme en action !
+        </div>
+
+        <div class="merge-visualization" id="mergeViz" style="display: none;">
+            <div class="array-container" id="leftArray"></div>
+            <div class="arrow">→</div>
+            <div class="array-container" id="rightArray"></div>
+            <div class="arrow">→</div>
+            <div class="array-container" id="mergedArray"></div>
+        </div>
+
+        <div class="code-section">
+            <h3>📄 Code de la fonction</h3>
+            <pre id="codeDisplay">void PmergeMe::sortPairsVector(std::vector&lt;std::pair&lt;int, int&gt; &gt;&amp; pairs) {
+    <span id="line1">if (pairs.size() &lt;= 1) return;</span>  // Cas de base
+    
+    if (pairs.size() &gt; 1) {
+        <span id="line2">// Division en deux moitiés</span>
+        <span id="line3">std::vector&lt;std::pair&lt;int, int&gt; &gt; left(pairs.begin(), pairs.begin() + pairs.size() / 2);</span>
+        <span id="line4">std::vector&lt;std::pair&lt;int, int&gt; &gt; right(pairs.begin() + pairs.size() / 2, pairs.end());</span>
+        
+        <span id="line5">// Appels récursifs</span>
+        <span id="line6">sortPairsVector(left);</span>
+        <span id="line7">sortPairsVector(right);</span>
+        
+        <span id="line8">// Fusion des deux moitiés triées</span>
+        <span id="line9">size_t i = 0, j = 0, k = 0;</span>
+        <span id="line10">while (i &lt; left.size() && j &lt; right.size()) {</span>
+            <span id="line11">if (left[i].first &lt;= right[j].first) {</span>
+                <span id="line12">pairs[k++] = left[i++];</span>
+            } else {
+                <span id="line13">pairs[k++] = right[j++];</span>
+            }
+        }
+        <span id="line14">while (i &lt; left.size()) pairs[k++] = left[i++];</span>
+        <span id="line15">while (j &lt; right.size()) pairs[k++] = right[j++];</span>
+    }
+}</pre>
+        </div>
+
+        <div class="complexity-info">
+            <h3>⚡ Complexité de l'algorithme</h3>
+            <p><strong>Complexité temporelle :</strong> O(n log n) - Optimal pour un tri par comparaison</p>
+            <p><strong>Complexité spatiale :</strong> O(n) - Pour les tableaux temporaires</p>
+            <p><strong>Stabilité :</strong> Oui - L'ordre relatif des éléments égaux est préservé</p>
+        </div>
+    </div>
+
+    <script>
+        let originalData = [
+            {first: 8, second: 3},
+            {first: 1, second: 7},
+            {first: 5, second: 2},
+            {first: 9, second: 4},
+            {first: 3, second: 6},
+            {first: 7, second: 1}
+        ];
+        
+        let currentData = [...originalData];
+        let stepIndex = 0;
+        let demoSteps = [];
+        let isRunning = false;
+
+        function generateNewData() {
+            originalData = [];
+            for (let i = 0; i < 6; i++) {
+                originalData.push({
+                    first: Math.floor(Math.random() * 10) + 1,
+                    second: Math.floor(Math.random() * 10) + 1
+                });
+            }
+            resetDemo();
+        }
+
+        function createPairElement(pair, className = '') {
+            const div = document.createElement('div');
+            div.className = `pair ${className}`;
+            div.textContent = `(${pair.first}, ${pair.second})`;
+            return div;
+        }
+
+        function displayArray(array, containerId, className = '') {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            array.forEach(pair => {
+                container.appendChild(createPairElement(pair, className));
+            });
+        }
+
+        function highlightCode(lineId) {
+            // Enlever tous les highlights précédents
+            document.querySelectorAll('.highlight').forEach(el => {
+                el.classList.remove('highlight');
+            });
+            
+            // Ajouter le highlight à la ligne courante
+            if (lineId) {
+                const line = document.getElementById(lineId);
+                if (line) {
+                    line.classList.add('highlight');
+                }
+            }
+        }
+
+        function updatePhase(phase) {
+            document.getElementById('phaseIndicator').textContent = `Phase: ${phase}`;
+        }
+
+        function showMergeVisualization(left, right, merged) {
+            const mergeViz = document.getElementById('mergeViz');
+            mergeViz.style.display = 'grid';
+            
+            displayArray(left, 'leftArray', 'left');
+            displayArray(right, 'rightArray', 'right');
+            displayArray(merged, 'mergedArray', 'merged');
+        }
+
+        function hideMergeVisualization() {
+            const mergeViz = document.getElementById('mergeViz');
+            mergeViz.style.display = 'none';
+        }
+
+        function createDemoSteps(arr, level = 0) {
+            const steps = [];
+            
+            if (arr.length <= 1) {
+                steps.push({
+                    type: 'base_case',
+                    data: [...arr],
+                    description: `📌 Cas de base atteint : tableau de taille ${arr.length}`,
+                    level: level,
+                    highlight: 'line1'
+                });
+                return { steps, result: [...arr] };
+            }
+
+            steps.push({
+                type: 'divide',
+                data: [...arr],
+                description: `🔪 Division du tableau de taille ${arr.length}`,
+                level: level,
+                highlight: 'line2'
+            });
+
+            const mid = Math.floor(arr.length / 2);
+            const left = arr.slice(0, mid);
+            const right = arr.slice(mid);
+
+            steps.push({
+                type: 'create_subarrays',
+                data: [...arr],
+                left: [...left],
+                right: [...right],
+                description: `📊 Création des sous-tableaux : gauche(${left.length}) et droite(${right.length})`,
+                level: level,
+                highlight: 'line3'
+            });
+
+            const leftResult = createDemoSteps(left, level + 1);
+            const rightResult = createDemoSteps(right, level + 1);
+            
+            steps.push(...leftResult.steps);
+            steps.push(...rightResult.steps);
+
+            // Processus de fusion
+            const merged = merge(leftResult.result, rightResult.result, steps, level);
+
+            return { steps, result: merged };
+        }
+
+        function merge(left, right, steps, level) {
+            const result = [];
+            let i = 0, j = 0;
+
+            steps.push({
+                type: 'start_merge',
+                left: [...left],
+                right: [...right],
+                description: `🔀 Début de la fusion des tableaux triés`,
+                level: level,
+                highlight: 'line9'
+            });
+
+            while (i < left.size && j < right.size) {
+                const comparing = `Comparaison: (${left[i].first}, ${left[i].second}) vs (${right[j].first}, ${right[j].second})`;
+                
+                if (left[i].first <= right[j].first) {
+                    result.push(left[i]);
+                    steps.push({
+                        type: 'merge_step',
+                        left: [...left],
+                        right: [...right],
+                        merged: [...result],
+                        description: `✅ ${comparing} → Prend l'élément de gauche`,
+                        level: level,
+                        highlight: 'line12'
+                    });
+                    i++;
+                } else {
+                    result.push(right[j]);
+                    steps.push({
+                        type: 'merge_step',
+                        left: [...left],
+                        right: [...right],
+                        merged: [...result],
+                        description: `✅ ${comparing} → Prend l'élément de droite`,
+                        level: level,
+                        highlight: 'line13'
+                    });
+                    j++;
+                }
+            }
+
+            // Ajouter les éléments restants
+            while (i < left.length) {
+                result.push(left[i]);
+                steps.push({
+                    type: 'merge_remaining',
+                    merged: [...result],
+                    description: `📝 Ajout des éléments restants de gauche: (${left[i].first}, ${left[i].second})`,
+                    level: level,
+                    highlight: 'line14'
+                });
+                i++;
+            }
+
+            while (j < right.length) {
+                result.push(right[j]);
+                steps.push({
+                    type: 'merge_remaining',
+                    merged: [...result],
+                    description: `📝 Ajout des éléments restants de droite: (${right[j].first}, ${right[j].second})`,
+                    level: level,
+                    highlight: 'line15'
+                });
+                j++;
+            }
+
+            steps.push({
+                type: 'merge_complete',
+                result: [...result],
+                description: `✨ Fusion terminée ! Tableau trié de taille ${result.length}`,
+                level: level,
+                highlight: null
+            });
+
+            return result;
+        }
+
+        function startDemo() {
+            if (isRunning) return;
+            
+            isRunning = true;
+            stepIndex = 0;
+            currentData = [...originalData];
+            
+            updatePhase('Génération des étapes');
+            const { steps } = createDemoSteps(currentData);
+            demoSteps = steps;
+            
+            updatePhase('Démo prête');
+            document.getElementById('nextBtn').disabled = false;
+            document.querySelector('button[onclick="startDemo()"]').disabled = true;
+            
+            displayArray(currentData, 'mainArray');
+            document.getElementById('stepDescription').textContent = 'Démo prête ! Cliquez sur "Étape suivante" pour commencer.';
+        }
+
+        function nextStep() {
+            if (stepIndex >= demoSteps.length) {
+                updatePhase('Terminé');
+                document.getElementById('nextBtn').disabled = true;
+                document.getElementById('stepDescription').textContent = '🎉 Algorithme terminé ! Le tableau est maintenant trié.';
+                hideMergeVisualization();
+                return;
+            }
+
+            const step = demoSteps[stepIndex];
+            const stepDesc = document.getElementById('stepDescription');
+            
+            stepDesc.className = 'step active';
+            stepDesc.textContent = `Étape ${stepIndex + 1}: ${step.description}`;
+            
+            highlightCode(step.highlight);
+
+            switch (step.type) {
+                case 'base_case':
+                    displayArray(step.data, 'mainArray');
+                    hideMergeVisualization();
+                    break;
+                    
+                case 'divide':
+                    displayArray(step.data, 'mainArray');
+                    updatePhase('Division');
+                    hideMergeVisualization();
+                    break;
+                    
+                case 'create_subarrays':
+                    displayArray(step.data, 'mainArray');
+                    showMergeVisualization(step.left, step.right, []);
+                    break;
+                    
+                case 'start_merge':
+                    updatePhase('Fusion');
+                    showMergeVisualization(step.left, step.right, []);
+                    break;
+                    
+                case 'merge_step':
+                    showMergeVisualization(step.left, step.right, step.merged);
+                    break;
+                    
+                case 'merge_remaining':
+                    displayArray(step.merged, 'mergedArray', 'merged');
+                    break;
+                    
+                case 'merge_complete':
+                    displayArray(step.result, 'mainArray', 'merged');
+                    currentData = [...step.result];
+                    hideMergeVisualization();
+                    break;
+            }
+
+            stepIndex++;
+            
+            setTimeout(() => {
+                stepDesc.classList.remove('active');
+            }, 500);
+        }
+
+        function resetDemo() {
+            isRunning = false;
+            stepIndex = 0;
+            demoSteps = [];
+            currentData = [...originalData];
+            
+            displayArray(currentData, 'mainArray');
+            hideMergeVisualization();
+            highlightCode(null);
+            
+            updatePhase('Initialisation');
+            document.getElementById('stepDescription').textContent = 'Cliquez sur "Démarrer la démo" pour voir l\'algorithme en action !';
+            document.getElementById('stepDescription').className = 'step';
+            
+            document.getElementById('nextBtn').disabled = true;
+            document.querySelector('button[onclick="startDemo()"]').disabled = false;
+        }
+
+        // Initialisation
+        displayArray(currentData, 'mainArray');
+    </script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schéma du tri des paires</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .step {
+            margin: 30px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            border-left: 5px solid #007bff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .step-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .step-number {
+            background: #007bff;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+        
+        .pairs-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+        
+        .pair {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            min-width: 80px;
+            text-align: center;
+        }
+        
+        .pair:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+        }
+        
+        .pair.highlight {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+            animation: pulse 1s ease-in-out;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .arrow {
+            text-align: center;
+            font-size: 2em;
+            color: #007bff;
+            margin: 20px 0;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        
+        .insertion-demo {
+            background: #f8f9fa;
+            border: 2px dashed #007bff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        
+        .code-snippet {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        
+        .explanation {
+            background: rgba(0, 123, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+            margin: 15px 0;
+            font-style: italic;
+        }
+        
+        .final-result {
+            background: linear-gradient(135deg, #48c774 0%, #06d6a0 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.2em;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Schéma du Tri des Paires par Insertion</h1>
+        
+        <div class="step">
+            <div class="step-title">
+                <div class="step-number">1</div>
+                État Initial
+            </div>
+            <div class="explanation">
+                Nous avons un vecteur de paires non triées. Chaque paire contient deux entiers (first, second).
+            </div>
+            <div class="pairs-container">
+                <div class="pair">(8, 3)</div>
+                <div class="pair">(12, 7)</div>
+                <div class="pair">(5, 9)</div>
+                <div class="pair">(15, 1)</div>
+                <div class="pair">(6, 11)</div>
+            </div>
+        </div>
+
+        <div class="arrow">⬇️</div>
+
+        <div class="step">
+            <div class="step-title">
+                <div class="step-number">2</div>
+                Vérification de la taille
+            </div>
+            <div class="code-snippet">
+if (pairs.size() <= 1) return;
+            </div>
+            <div class="explanation">
+                Si le vecteur a 0 ou 1 élément, il est déjà trié, donc on retourne immédiatement.
+                <br><strong>Dans notre cas :</strong> 5 éléments > 1, donc on continue.
+            </div>
+        </div>
+
+        <div class="arrow">⬇️</div>
+
+        <div class="step">
+            <div class="step-title">
+                <div class="step-number">3</div>
+                Tri par Insertion - Itération 1
+            </div>
+            <div class="explanation">
+                On commence avec i=1 (deuxième élément). On compare (12,7) avec (8,3).
+                <br><strong>Comparaison :</strong> 12 > 8, donc pas de déplacement.
+            </div>
+            <div class="pairs-container">
+                <div class="pair">(8, 3)</div>
+                <div class="pair highlight">(12, 7)</div>
+                <div class="pair">(5, 9)</div>
+                <div class="pair">(15, 1)</div>
+                <div class="pair">(6, 11)</div>
+            </div>
+        </div>
+
+        <div class="arrow">⬇️</div>
+
+        <div class="step">
+            <div class="step-title">
+                <div class="step-number">4</div>
+                Tri par Insertion - Itération 2
+            </div>
+            <div class="explanation">
+                i=2, on traite (5,9). On compare 5 avec 12, puis avec 8.
+                <br><strong>5 < 12 ✓</strong> et <strong>5 < 8 ✓</strong>, donc on déplace (5,9) au début.
+            </div>
+            <div class="pairs-container">
+                <div class="pair highlight">(5, 9)</div>
+                <div class="pair">(8, 3)</div>
+                <div class="pair">(12, 7)</div>
+                <div class="pair">(15, 1)</div>
+                <div class="pair">(6, 11)</div>
+            </div>
+        </div>
+
+        <div class="arrow">⬇️</div>
+
+        <div class="step">
+            <div class="step-title">
+                <div class="step-number">5</div>
+                Tri par Insertion - Itération 3
+            </div>
+            <div class="explanation">
+                i=3, on traite (15,1). 15 > 12, 15 > 8, 15 > 5, donc pas de déplacement.
+            </div>
+            <div class="pairs-container">
+                <div class="pair">(5, 9)</div>
+                <div class="pair">(8, 3)</div>
+                <div class="pair">(12, 7)</div>
+                <div class="pair highlight">(15, 1)</div>
+                <div class="pair">(6, 11)</div>
+            </div>
+        </div>
+
+        <div class="arrow">⬇️</div>
+
+        <div class="step">
+            <div class="step-title">
+                <div class="step-number">6</div>
+                Tri par Insertion - Itération 4 (Finale)
+            </div>
+            <div class="explanation">
+                i=4, on traite (6,11). 6 < 15, 6 < 12, 6 < 8, mais 6 > 5.
+                <br>On insère (6,11) après (5,9).
+            </div>
+            <div class="pairs-container">
+                <div class="pair">(5, 9)</div>
+                <div class="pair highlight">(6, 11)</div>
+                <div class="pair">(8, 3)</div>
+                <div class="pair">(12, 7)</div>
+                <div class="pair">(15, 1)</div>
+            </div>
+        </div>
+
+        <div class="arrow">⬇️</div>
+
+        <div class="step">
+            <div class="step-title">
+                <div class="step-number">7</div>
+                Algorithme de Tri par Insertion
+            </div>
+            <div class="code-snippet">
+for (size_t i = 1; i < pairs.size(); ++i) {
+    std::pair&lt;int, int&gt; key = pairs[i];
+    int j = i - 1;
+    
+    while (j >= 0 && pairs[j].first > key.first) {
+        pairs[j + 1] = pairs[j];  // Décalage à droite
+        j--;
+    }
+    pairs[j + 1] = key;  // Insertion à la bonne position
+}
+            </div>
+            <div class="explanation">
+                <strong>Principe :</strong> Pour chaque élément, on le compare avec les éléments précédents (déjà triés) et on l'insère à sa position correcte en décalant les autres.
+            </div>
+        </div>
+
+        <div class="final-result">
+            <h2>🎯 Résultat Final</h2>
+            <div class="pairs-container">
+                <div class="pair">(5, 9)</div>
+                <div class="pair">(6, 11)</div>
+                <div class="pair">(8, 3)</div>
+                <div class="pair">(12, 7)</div>
+                <div class="pair">(15, 1)</div>
+            </div>
+            <p><strong>Les paires sont maintenant triées par ordre croissant de leur plus grand élément (first) !</strong></p>
+            <p>5 < 6 < 8 < 12 < 15 ✅</p>
+        </div>
+    </div>
+</body>
+</html>
