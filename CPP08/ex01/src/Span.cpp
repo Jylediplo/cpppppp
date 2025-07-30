@@ -1,4 +1,4 @@
-#include "../headers/Span.hpp"
+ #include "../headers/Span.hpp"
 
 Span::Span() : _maxSize(0)
 {
