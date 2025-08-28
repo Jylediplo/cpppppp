@@ -189,6 +189,7 @@ void BitcoinExchange::processLine(const std::string& line) const
     
     double result = value * rate;
     std::cout << dateStr << " => " << value << " = " << result << std::endl;
+    
 }
 
 void BitcoinExchange::processInputFile(const std::string& filename)
