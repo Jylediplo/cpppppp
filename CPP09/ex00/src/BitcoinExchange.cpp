@@ -46,6 +46,14 @@ void BitcoinExchange::loadDatabase()
     file.close();
 }
 
+bool BitcoinExchange::isBisextileYear(int year) const
+{
+    // Une année est bisextile si :
+    // - Elle est divisible par 4 ET
+    // - (Elle n'est pas divisible par 100 OU elle est divisible par 400)
+    return (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0));
+}
+
 bool BitcoinExchange::isValidDate(const std::string& date) const
 {
     if (date.length() != 10)
@@ -72,8 +80,19 @@ bool BitcoinExchange::isValidDate(const std::string& date) const
     if (day < 1 || day > 31)
         return false;
     
-    if (month == 2 && day > 29)
-        return false;
+       if (month == 2)
+    {
+        if (isBisextileYear(year))
+        {
+            if (day > 29)
+                return false;
+        }
+        else
+        {
+            if (day > 28)
+                return false;
+        }
+    }
     if ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30)
         return false;
     
@@ -108,14 +127,19 @@ double BitcoinExchange::findClosestRate(const std::string& date) const
 {
     std::map<std::string, double>::const_iterator it = _database.lower_bound(date);
     
+    // Si on trouve exactement la date
+    if (it != _database.end() && it->first == date)
+        return it->second;
+    
+    // Sinon, on cherche la date précédente la plus proche
     if (it != _database.begin())
+    {
         --it;
-    else if (it == _database.end() || it->first != date)
-        return -1; // No previous date found
-    // std::cout << "test : " << (++it)->first << "date : " << date << std::endl;
-    if ((++it)->first == date)
-        return (it)->second;
-    return it->second;
+        return it->second;
+    }
+    
+    // Aucune date précédente trouvée
+    return -1;
 }
 
 // bool BitcoinExchange::isDateBefore(const std::string& date1, const std::string& date2) const

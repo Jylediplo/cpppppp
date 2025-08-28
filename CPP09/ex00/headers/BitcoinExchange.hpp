@@ -19,6 +19,7 @@ private:
     bool isValidValue(const std::string& valueStr, double& value) const;
     std::string trim(const std::string& str) const;
     double findClosestRate(const std::string& date) const;
+    bool isBisextileYear(int year) const;
     bool isDateBefore(const std::string& date1, const std::string& date2) const;
     void processLine(const std::string& line) const;
 
